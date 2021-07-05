@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+  <meta charset="utf-8">
+  <title>Qpro</title>
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;700&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" type="image/png" href="img/favicon.png">
+</head>
+<body class="bg-gray-200">
+  <header th:replace="fragments/header :: header"></header>
+
+  <main class="flex min-h-main m-2 mb-0">
+    <div th:replace="@{'views/' + ${view}} :: ${view}"></div>
+  </main>
+
+  <footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>

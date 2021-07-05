@@ -1,0 +1,20 @@
+<div class="flex flex-grow flex-col items-center justify-center mb-32 mx-2" th:fragment="signin">
+  <form class="flex flex-col max-w-lg w-full" method="POST" th:action="@{/signin}">
+    <h1 class="text-3xl border-l-1 border-current font-medium pl-1">Sign in</h1>
+    <h2 class="text-base border-l-1 border-transparent pl-1.5 mb-2 mt-1" th:text="${message}"></h2>
+
+    <div class="flex flex-col m-2">
+      <input name="username" type="text" class="text-lg p-1 w-full mb-2" placeholder="email" autofocus="true"/>
+
+      <input name="password" type="password" class="text-lg p-1 w-full" placeholder="password"/>
+      <span class="text-red-500 mt-2 mb-4" th:text="${error}"></span>
+
+      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
+      <div class="flex flex-row justify-between">
+        <button class="border-1 border-current p-1 px-4 hover:bg-gray-300" type="submit">Sign in</button>
+        <h4 class="border-b-1 border-current self-end"><a href="/signup">Create an account</a></h4>
+      </div>
+    </div>
+  </form>
+</div>

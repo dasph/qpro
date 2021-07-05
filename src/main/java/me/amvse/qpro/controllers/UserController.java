@@ -28,15 +28,19 @@ public class UserController {
   public String signup (Model model) {
     if (securityService.isAuthenticated()) return "redirect:/";
 
+    model.addAttribute("view", "signup");
     model.addAttribute("signupForm", new SignupForm());
 
-    return "signup";
+    return "index";
   }
 
   @PostMapping("/signup")
-  public String signup (@ModelAttribute("signupForm") SignupForm signupForm, BindingResult bindingResult) {
+  public String signup (@ModelAttribute("signupForm") SignupForm signupForm, BindingResult bindingResult, Model model) {
     signupFormValidator.validate(signupForm, bindingResult);
-    if (bindingResult.hasErrors()) return "signup";
+    if (bindingResult.hasErrors()) {
+      model.addAttribute("view", "signup");
+      return "index";
+    }
 
     userService.create(signupForm);
 
@@ -49,15 +53,19 @@ public class UserController {
   public String signin (Model model, String error, String logout) {
     if (securityService.isAuthenticated()) return "redirect:/";
 
+    model.addAttribute("view", "signin");
+
     if (error != null) model.addAttribute("error", "Invalid credentials.");
 
     if (logout != null) model.addAttribute("message", "You have been successfully logged out.");
 
-    return "signin";
+    return "index";
   }
 
   @GetMapping({"/"})
   public String home (Model model) {
-    return "home";
+    model.addAttribute("view", "home");
+
+    return "index";
   }
 }

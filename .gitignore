@@ -1,2 +1,6 @@
-target/
+target
+node_modules
+package.json
+package-lock.json
+tailwind.config.js
 src/main/resources/application.properties
