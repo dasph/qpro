@@ -56,7 +56,7 @@ public class SignupFormValidator implements Validator {
     java.util.regex.Matcher m = p.matcher(email);
 
     return m.matches();
-}
+  }
 
   private boolean containsLowerCase (String value) {
     return anyMatch(value, i -> Character.isLetter(i) && Character.isLowerCase(i));
