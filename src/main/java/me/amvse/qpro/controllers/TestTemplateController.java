@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import me.amvse.qpro.forms.NewTemplateForm;
+import me.amvse.qpro.models.Question;
 import me.amvse.qpro.models.TestTemplate;
 import me.amvse.qpro.models.User;
 import me.amvse.qpro.repositories.TestTemplateRepository;
@@ -56,7 +57,6 @@ public class TestTemplateController {
       // throw 404
       return "redirect:/";
     }
-    System.out.println("|||||");
 
     TestTemplate tt = testTemplateRepository.findById(templateId).orElse(null);
     if (tt == null) {
@@ -69,8 +69,11 @@ public class TestTemplateController {
       return "redirect:/templates";
     }
 
+    List<Question> q = tt.getQuestions();
+
     model.addAttribute("view", "showTemplate");
     model.addAttribute("template", tt);
+    model.addAttribute("questions", q);
 
     return "index";
   }

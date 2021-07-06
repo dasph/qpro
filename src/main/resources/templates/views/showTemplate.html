@@ -9,24 +9,33 @@
     <a th:href="'/templates/' + ${template.id} + '/new'" class="hidden sm:block self-center border-current border-1 px-3 py-1 cursor-pointer hover:text-white hover:bg-black">new</a>
   </div>
 
-  <!-- <div th:if="${templates.empty}"><h3>No questions available</h3></div> -->
+  <div th:if="${questions.empty}"><h3>No questions available</h3></div>
   <div>
-    <!-- <div class="flex justify-between p-2 py-4 border-b-1 border-current" th:each="template : ${templates}">
-      <h3 class="" th:text="${template.name}"></h3>
-      <div class="flex space-x-4">
-        <form method="POST" th:action="'/templates/launch/' + ${template.id}">
-          <button type="submit" class="py-0.5 px-1 font-normal border-current border-1 hover:bg-green-100">launch</button>
-        </form>
+    <div class="flex p-2 py-4 border-b-1 border-current" th:each="question : ${questions}">
+      <div class="grid grid-cols-2 grid-flow-col w-full">
+        <div class="col-span-1 flex space-x-5">
+          <img class="w-16 h-16" th:if="${question.image}" th:src="'data:image/png;base64,' + ${question.image}" />
+          <img class="w-16 h-16" th:if="!${question.image}" src="/img/image.png" />
+          <h3 class="" th:text="${question.value}"></h3>
+        </div>
 
-        <form method="GET" th:action="'/templates/' + ${template.id}">
-          <button type="submit" class="py-0.5 px-1 font-normal border-current border-1 hover:bg-yellow-100">edit</button>
-        </form>
+        <div class="col-span-1 grid gap-2 grid-cols-2 grid-rows-2 text-sm">
+          <div class="flex" th:each="answer : ${question.answers}">
+            <h1 th:text="${answer.value}" th:class="${answer.correct} ? 'border-current p-1 border-l-1' : 'border-current p-1'"></h1>
+          </div>
+        </div>
+      </div>
 
-        <form method="POST" th:action="'/templates/delete/' + ${template.id}">
+      <div class="flex space-x-4 items-center">
+        <div class="py-0.5 px-1 font-normal border-current border-1 hover:bg-yellow-100">
+          <a th:href="'/templates/' + ${template.id} + '/' + ${question.id} ">edit</a>
+        </div>
+
+        <form method="POST" th:action="'/templates/delete/' + ${template.id} + '/' + ${question.id}">
           <button type="submit" class="py-0.5 px-1 font-normal border-current border-1 hover:bg-red-500">delete</button>
         </form>
       </div>
-    </div> -->
+    </div>
   </div>
 
 </div>

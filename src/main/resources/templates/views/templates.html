@@ -8,10 +8,10 @@
 
   <div th:if="${templates.empty}"><h3>No templates available</h3></div>
   <div>
-    <div class="flex justify-between p-2 py-4 border-b-1 border-current" th:each="template : ${templates}">
-      <h3 class="" th:text="${template.name}"></h3>
-      <!-- number of questions -->
-      <div class="flex space-x-4">
+    <div class="grid grid-cols-5 w-full p-2 py-4 border-b-1 border-current" th:each="template : ${templates}">
+      <h3 class="text-xl col-span-3" th:text="${template.name}"></h3>
+      <h3 class="" th:text="'questions: ' + ${#lists.size(template.questions)}"></h3>
+      <div class="flex space-x-4 justify-end">
         <form method="POST" th:action="'/templates/launch/' + ${template.id}">
           <button type="submit" class="py-0.5 px-1 font-normal border-current border-1 hover:bg-green-100">launch</button>
         </form>
@@ -26,5 +26,4 @@
       </div>
     </div>
   </div>
-
 </div>

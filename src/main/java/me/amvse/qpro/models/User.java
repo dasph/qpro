@@ -3,6 +3,7 @@ package me.amvse.qpro.models;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class User {
 
   @OneToMany
   @JoinColumn(name = "userId")
+  @OrderBy("id ASC")
   private List<TestTemplate> testTemplates = new ArrayList<>();
 
   public User () {}

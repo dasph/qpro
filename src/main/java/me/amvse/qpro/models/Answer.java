@@ -17,18 +17,17 @@ public class Answer {
   private Long id;
 
   @ManyToOne
-  @JoinColumn(name="questionId", nullable=false)
+  @JoinColumn(name="questionId", insertable = false, updatable = false)
   private Question question;
 
-  @Column(name = "value", nullable = false, length = 256)
+  @Column(name = "value", nullable = false, length = 512)
   private String value;
 
   @Column(name = "correct", nullable = false)
   private Boolean correct;
 
   public Answer () {}
-  public Answer (Question question, String value, Boolean correct) {
-    this.question = question;
+  public Answer (String value, Boolean correct) {
     this.value = value;
     this.correct = correct;
   }
@@ -36,7 +35,6 @@ public class Answer {
   public Long getId () { return this.id; }
 
   public Question getQuestion () { return this.question; }
-  public void setQuestion (Question question) { this.question = question; }
 
   public String getValue () { return this.value; }
   public void setValue (String value) { this.value = value; }

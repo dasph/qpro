@@ -3,7 +3,13 @@ package me.amvse.qpro.models;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,6 +29,11 @@ public class TestTemplate {
   @JoinColumn(name = "userId", insertable = false, updatable = false)
   private User user;
 
+  @OneToMany
+  @JoinColumn(name = "testTemplateId")
+  @OrderBy("id ASC")
+  private List<Question> questions = new ArrayList<>();
+
   public TestTemplate () {}
   public TestTemplate (String name) { this.name = name; }
 
@@ -32,4 +43,7 @@ public class TestTemplate {
   public void setName (String name) { this.name = name; }
 
   public User getUser () { return this.user; }
+
+  public List<Question> getQuestions () { return this.questions; }
+  public void addQuestion (Question questions) { this.questions.add(questions); }
 }
