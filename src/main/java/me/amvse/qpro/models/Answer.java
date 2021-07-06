@@ -23,10 +23,14 @@ public class Answer {
   @Column(name = "value", nullable = false, length = 256)
   private String value;
 
+  @Column(name = "correct", nullable = false)
+  private Boolean correct;
+
   public Answer () {}
-  public Answer (Question question, String value) {
+  public Answer (Question question, String value, Boolean correct) {
     this.question = question;
     this.value = value;
+    this.correct = correct;
   }
 
   public Long getId () { return this.id; }
@@ -36,4 +40,7 @@ public class Answer {
 
   public String getValue () { return this.value; }
   public void setValue (String value) { this.value = value; }
+
+  public Boolean getCorrect () { return this.correct; }
+  public void setCorrect (Boolean correct) { this.correct = correct; }
 }

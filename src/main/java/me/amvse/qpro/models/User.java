@@ -1,7 +1,13 @@
 package me.amvse.qpro.models;
 
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,6 +32,10 @@ public class User {
   @Column(name = "hmac", nullable = false, length = 60)
   private String hmac;
 
+  @OneToMany
+  @JoinColumn(name = "userId")
+  private List<TestTemplate> testTemplates = new ArrayList<>();
+
   public User () {}
   public User (String name, String email, String hmac) {
     this.name = name;
@@ -47,4 +57,7 @@ public class User {
 
   public String getHmac () { return this.hmac; }
   public void setHmac (String hmac) { this.hmac = hmac; }
+
+  public List<TestTemplate> getTestTemplates () { return this.testTemplates; }
+  public void addTestTemplate (TestTemplate tt) { this.testTemplates.add(tt); }
 }

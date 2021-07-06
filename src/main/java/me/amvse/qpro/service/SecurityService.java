@@ -37,4 +37,8 @@ public class SecurityService {
       SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
     }
   }
+
+  public String getEmail () {
+    return SecurityContextHolder.getContext().getAuthentication().getName();
+  }
 }
