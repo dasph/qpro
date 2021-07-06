@@ -34,7 +34,7 @@ public class TestTemplateController {
   private NewTemplateFormValidator newTemplateFormValidator;
 
   @GetMapping("/templates")
-  public String templates (Model model) {
+  public String getAllTemplates (Model model) {
     User user = userRepository.findOneByEmail(securityService.getEmail()).orElse(null);
     if (user == null) {
       // throw 404
@@ -49,8 +49,34 @@ public class TestTemplateController {
     return "index";
   }
 
+  @GetMapping("/templates/{templateId}")
+  public String getTemplate (@PathVariable Long templateId,  Model model) {
+    User user = userRepository.findOneByEmail(securityService.getEmail()).orElse(null);
+    if (user == null) {
+      // throw 404
+      return "redirect:/";
+    }
+    System.out.println("|||||");
+
+    TestTemplate tt = testTemplateRepository.findById(templateId).orElse(null);
+    if (tt == null) {
+      // throw 404
+      return "redirect:/templates";
+    }
+
+    if (!tt.getUser().equals(user)) {
+      // throw 403
+      return "redirect:/templates";
+    }
+
+    model.addAttribute("view", "showTemplate");
+    model.addAttribute("template", tt);
+
+    return "index";
+  }
+
   @GetMapping("/templates/new")
-  public String addTemplate (Model model) {
+  public String getNewTemplate (Model model) {
     model.addAttribute("view", "addTemplate");
     model.addAttribute("newTemplateForm", new NewTemplateForm());
 
@@ -58,7 +84,7 @@ public class TestTemplateController {
   }
 
   @PostMapping("/templates")
-  public String createTemplate (@ModelAttribute("newTemplateForm") NewTemplateForm newTemplateForm, BindingResult bindingResult, Model model) {
+  public String postNewTemplate (@ModelAttribute("newTemplateForm") NewTemplateForm newTemplateForm, BindingResult bindingResult, Model model) {
     newTemplateFormValidator.validate(newTemplateForm, bindingResult);
     if (bindingResult.hasErrors()) {
       model.addAttribute("view", "addTemplate");
@@ -79,12 +105,73 @@ public class TestTemplateController {
     return "redirect:/templates/" + tt.getId();
   }
 
+  @GetMapping("/templates/{templateId}/edit")
+  public String getEditTemplate (@PathVariable Long templateId,  Model model) {
+    User user = userRepository.findOneByEmail(securityService.getEmail()).orElse(null);
+    if (user == null) {
+      // throw 404
+      return "redirect:/";
+    }
+
+    TestTemplate tt = testTemplateRepository.findById(templateId).orElse(null);
+    if (tt == null) {
+      // throw 404
+      return "redirect:/templates";
+    }
+
+    if (!tt.getUser().equals(user)) {
+      // throw 403
+      return "redirect:/templates";
+    }
+
+    model.addAttribute("view", "editTemplate");
+    model.addAttribute("template", tt);
+    model.addAttribute("newTemplateForm", new NewTemplateForm());
+
+    return "index";
+  }
+
+  @PostMapping("/templates/{templateId}")
+  public String postEditTemplate (@ModelAttribute("newTemplateForm") NewTemplateForm newTemplateForm, BindingResult bindingResult, @PathVariable Long templateId, Model model) {
+    newTemplateFormValidator.validate(newTemplateForm, bindingResult);
+    if (bindingResult.hasErrors()) {
+      TestTemplate tt = testTemplateRepository.findById(templateId).orElse(null);
+      model.addAttribute("view", "editTemplate");
+      model.addAttribute("template", tt);
+
+      return "index";
+    }
+
+    User user = userRepository.findOneByEmail(securityService.getEmail()).orElse(null);
+    if (user == null) {
+      // throw 404
+      return "index";
+    }
+
+    TestTemplate tt = testTemplateRepository.findById(templateId).orElse(null);
+    if (tt == null) {
+      // throw 404
+      return "redirect:/templates";
+    }
+
+    if (!tt.getUser().equals(user)) {
+      // throw 403
+      return "redirect:/templates";
+    }
+
+    tt.setName(newTemplateForm.getName());
+
+    testTemplateRepository.save(tt);
+
+    return "redirect:/templates/" + tt.getId();
+  }
+
   @PostMapping("/templates/delete/{templateId}")
   public String deleteTemplate (@PathVariable Long templateId) {
     User user = userRepository.findOneByEmail(securityService.getEmail()).orElse(null);
     if (user == null) {
       // throw 404
-      return "redirect:/templates";
+      return "redirect:/";
     }
 
     TestTemplate tt = testTemplateRepository.findById(templateId).orElse(null);

@@ -16,9 +16,9 @@
           <button type="submit" class="py-0.5 px-1 font-normal border-current border-1 hover:bg-green-100">launch</button>
         </form>
 
-        <form method="GET" th:action="'/templates/' + ${template.id}">
-          <button type="submit" class="py-0.5 px-1 font-normal border-current border-1 hover:bg-yellow-100">edit</button>
-        </form>
+        <div class="py-0.5 px-1 font-normal border-current border-1 hover:bg-yellow-100">
+          <a th:href="'/templates/' + ${template.id}">edit</a>
+        </div>
 
         <form method="POST" th:action="'/templates/delete/' + ${template.id}">
           <button type="submit" class="py-0.5 px-1 font-normal border-current border-1 hover:bg-red-500">delete</button>
