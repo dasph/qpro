@@ -1,0 +1,24 @@
+<div class="flex flex-col flex-grow" th:fragment="submissions">
+  <h1 class="text-2xl sm:text-3xl px-1 pb-2 mt-1 mb-2 border-l-1 border-current select-none">all submitted tests</h1>
+  <h2 class="sm:text-lg font-light ml-1 mb-5">List of all submissions for this tests</h2>
+  <div class="flex flex-row justify-between mb-10">
+    <h1 class="text-lg sm:text-xl px-2 border-b-1 border-current">submissions</h1>
+  </div>
+
+  <div th:if="${users.empty}"><h3>No user has submitted this test</h3></div>
+  <div>
+    <div class="grid grid-cols-4 gap-1 w-full p-2 py-4 border-b-1 border-current items-center" th:each="user : ${users}">
+      <h3 class="text-xl" th:text="${user.name}"></h3>
+      <h3 class="" th:text="${user.email}"></h3>
+      <div class="col-span-2 flex space-x-4 justify-end">
+        <div class="py-0.5 px-1 font-normal border-current border-1 hover:bg-green-100">
+          <a th:href="'/tests/' + ${testId} + '/' + ${user.id}">view</a>
+        </div>
+
+        <form method="POST" th:action="'/tests/delete/' + ${testId} + '/' + ${user.id}">
+          <button type="submit" class="py-0.5 px-1 font-normal border-current border-1 hover:bg-red-500">delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

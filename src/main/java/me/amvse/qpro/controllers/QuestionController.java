@@ -242,10 +242,10 @@ public class QuestionController {
 
     List<Answer> ans = q.getAnswers();
 
-    try { Answer answerA = ans.get(0); answerA.setValue(newQuestionForm.getAnswerA()); System.out.println(newQuestionForm.getCheckboxA()); answerA.setCorrect(newQuestionForm.getCheckboxA()); answerRepository.save(answerA); } catch (Throwable e) {}
-    try { Answer answerB = ans.get(1); answerB.setValue(newQuestionForm.getAnswerB()); System.out.println(newQuestionForm.getCheckboxB()); answerB.setCorrect(newQuestionForm.getCheckboxB()); answerRepository.save(answerB); } catch (Throwable e) {}
-    try { Answer answerC = ans.get(2); answerC.setValue(newQuestionForm.getAnswerC()); System.out.println(newQuestionForm.getCheckboxC()); answerC.setCorrect(newQuestionForm.getCheckboxC()); answerRepository.save(answerC); } catch (Throwable e) {}
-    try { Answer answerD = ans.get(3); answerD.setValue(newQuestionForm.getAnswerD()); System.out.println(newQuestionForm.getCheckboxD()); answerD.setCorrect(newQuestionForm.getCheckboxD()); answerRepository.save(answerD); } catch (Throwable e) {}
+    try { Answer answerA = ans.get(0); answerA.setValue(newQuestionForm.getAnswerA()); answerA.setCorrect(newQuestionForm.getCheckboxA()); answerRepository.save(answerA); } catch (Throwable e) {}
+    try { Answer answerB = ans.get(1); answerB.setValue(newQuestionForm.getAnswerB()); answerB.setCorrect(newQuestionForm.getCheckboxB()); answerRepository.save(answerB); } catch (Throwable e) {}
+    try { Answer answerC = ans.get(2); answerC.setValue(newQuestionForm.getAnswerC()); answerC.setCorrect(newQuestionForm.getCheckboxC()); answerRepository.save(answerC); } catch (Throwable e) {}
+    try { Answer answerD = ans.get(3); answerD.setValue(newQuestionForm.getAnswerD()); answerD.setCorrect(newQuestionForm.getCheckboxD()); answerRepository.save(answerD); } catch (Throwable e) {}
 
     return "redirect:/templates/" + templateId;
   }

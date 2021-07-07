@@ -20,6 +20,10 @@ public class AnswerSubmission {
   private User user;
 
   @ManyToOne
+  @JoinColumn(name="testId", insertable = false, updatable = false)
+  private Test test;
+
+  @ManyToOne
   @JoinColumn(name="questionId", insertable = false, updatable = false)
   private Question question;
 
@@ -28,19 +32,14 @@ public class AnswerSubmission {
   private Answer answer;
 
   public AnswerSubmission () {}
-  public AnswerSubmission (Question question, Answer answer) {
-    this.question = question;
-    this.answer = answer;
-  }
 
   public Long getId () { return this.id; }
 
   public User getUser () { return this.user; }
-  public void setUser (User user) { this.user = user; }
+
+  public Test getTest () { return this.test; }
 
   public Question getQuestion () { return this.question; }
-  public void setQuestion (Question question) { this.question = question; }
 
   public Answer getAnswer () { return this.answer; }
-  public void setAnswer (Answer answer) { this.answer = answer; }
 }

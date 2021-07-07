@@ -38,6 +38,11 @@ public class Question {
   @OrderBy("id ASC")
   private List<Answer> answers = new ArrayList<>();
 
+  @OneToMany
+  @JoinColumn(name = "questionId")
+  @OrderBy("id ASC")
+  private List<AnswerSubmission> answerSumbissions = new ArrayList<>();
+
   public Question () {}
   public Question (String value, String image) {
     this.value = value;
@@ -56,4 +61,7 @@ public class Question {
 
   public List<Answer> getAnswers () { return this.answers; }
   public void addAnswer (Answer answer) { this.answers.add(answer); }
+
+  public List<AnswerSubmission> getAnswerSubmissions () { return this.answerSumbissions; }
+  public void addAnswerSubmission (AnswerSubmission answerSubmission) { this.answerSumbissions.add(answerSubmission); }
 }

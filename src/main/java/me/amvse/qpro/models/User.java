@@ -43,6 +43,11 @@ public class User {
   @OrderBy("id ASC")
   private List<Test> tests = new ArrayList<>();
 
+  @OneToMany
+  @JoinColumn(name = "userId")
+  @OrderBy("id ASC")
+  private List<AnswerSubmission> answerSumbissions = new ArrayList<>();
+
   public User () {}
   public User (String name, String email, String hmac) {
     this.name = name;
@@ -70,4 +75,7 @@ public class User {
 
   public List<Test> getTests () { return this.tests; }
   public void addTest (Test test) { this.tests.add(test); }
+
+  public List<AnswerSubmission> getAnswerSubmissions () { return this.answerSumbissions; }
+  public void addAnswerSubmission (AnswerSubmission answerSubmission) { this.answerSumbissions.add(answerSubmission); }
 }
