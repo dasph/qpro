@@ -8,20 +8,21 @@
 
   <div th:if="${templates.empty}"><h3>No templates available</h3></div>
   <div>
-    <div class="grid grid-cols-5 w-full p-2 py-4 border-b-1 border-current" th:each="template : ${templates}">
+    <div class="grid grid-cols-5 w-full p-2 py-4 border-b-1 border-current items-center" th:each="template : ${templates}">
       <h3 class="text-xl col-span-3" th:text="${template.name}"></h3>
       <h3 class="" th:text="'questions: ' + ${#lists.size(template.questions)}"></h3>
       <div class="flex space-x-4 justify-end">
-        <form method="POST" th:action="'/templates/launch/' + ${template.id}">
+        <form method="POST" action="/tests">
+          <input type="hidden" name="templateId" th:value="${template.id}" />
           <button type="submit" class="py-0.5 px-1 font-normal border-current border-1 hover:bg-green-100">launch</button>
         </form>
 
-        <div class="py-0.5 px-1 font-normal border-current border-1 hover:bg-yellow-100">
+        <div th:class="'py-0.5 px-1 font-normal border-current border-1 hover:bg-yellow-100' + (${!template.tests.empty} ? ' opacity-50 pointer-events-none' : '')">
           <a th:href="'/templates/' + ${template.id}">edit</a>
         </div>
 
         <form method="POST" th:action="'/templates/delete/' + ${template.id}">
-          <button type="submit" class="py-0.5 px-1 font-normal border-current border-1 hover:bg-red-500">delete</button>
+          <button type="submit" th:class="'py-0.5 px-1 font-normal border-current border-1 hover:bg-red-500' + (${!template.tests.empty} ? ' opacity-50 pointer-events-none' : '')">delete</button>
         </form>
       </div>
     </div>

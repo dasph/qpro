@@ -16,15 +16,15 @@ public class AnswerSubmission {
   private Long id;
 
   @ManyToOne
-  @JoinColumn(name="userId", nullable=false)
+  @JoinColumn(name="userId", insertable = false, updatable = false)
   private User user;
 
   @ManyToOne
-  @JoinColumn(name="questionId", nullable=false)
+  @JoinColumn(name="questionId", insertable = false, updatable = false)
   private Question question;
 
   @ManyToOne
-  @JoinColumn(name="answerId", nullable=false)
+  @JoinColumn(name="answerId", insertable = false, updatable = false)
   private Answer answer;
 
   public AnswerSubmission () {}

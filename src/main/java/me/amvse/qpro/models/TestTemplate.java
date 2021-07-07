@@ -34,6 +34,11 @@ public class TestTemplate {
   @OrderBy("id ASC")
   private List<Question> questions = new ArrayList<>();
 
+  @OneToMany
+  @JoinColumn(name = "testTemplateId")
+  @OrderBy("id ASC")
+  private List<Test> tests = new ArrayList<>();
+
   public TestTemplate () {}
   public TestTemplate (String name) { this.name = name; }
 
@@ -46,4 +51,7 @@ public class TestTemplate {
 
   public List<Question> getQuestions () { return this.questions; }
   public void addQuestion (Question questions) { this.questions.add(questions); }
+
+  public List<Test> getTests () { return this.tests; }
+  public void addTest (Test test) { this.tests.add(test); }
 }

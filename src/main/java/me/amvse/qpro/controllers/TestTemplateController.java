@@ -69,6 +69,8 @@ public class TestTemplateController {
       return "redirect:/templates";
     }
 
+    if (!tt.getTests().isEmpty()) return "redirect:/templates";
+
     List<Question> q = tt.getQuestions();
 
     model.addAttribute("view", "showTemplate");
