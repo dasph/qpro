@@ -1,0 +1,29 @@
+<div class="flex flex-col flex-grow" th:fragment="tests">
+  <h1 class="text-2xl sm:text-3xl px-1 pb-2 mt-1 mb-2 border-l-1 border-current select-none">all tests</h1>
+  <h2 class="sm:text-lg font-light ml-1 mb-5">List of all your tests</h2>
+  <div class="flex flex-row justify-between mb-10">
+    <h1 class="text-lg sm:text-xl px-2 border-b-1 border-current">tests</h1>
+  </div>
+
+  <div th:if="${tests.empty}"><h3>No tests available</h3></div>
+  <div>
+    <div class="grid grid-cols-8 gap-1 w-full p-2 py-4 border-b-1 border-current items-center" th:each="test : ${tests}">
+      <h3 class="text-xl col-span-2" th:text="${test.testTemplate.name}"></h3>
+      <h3 class="" th:text="'questions: ' + ${#lists.size(test.testTemplate.questions)}"></h3>
+      <h3 class="col-span-2" th:text="'| invite: ' + ${test.key}"></h3>
+      <div class="col-span-3 flex space-x-4 justify-end">
+        <div class="py-0.5 px-1 font-normal border-current border-1 hover:bg-green-100">
+          <a th:href="'/tests/' + ${test.id}">view</a>
+        </div>
+
+        <form method="POST" th:action="'/tests/toggle/' + ${test.id}">
+          <button type="submit" th:text="${test.active} ? 'disable' : 'enable'" th:class="'py-0.5 px-1 font-normal border-current border-1 hover:bg-yellow-100 ' + (${test.active} ? 'bg-red-100' : 'bg-green-100')"></button>
+        </form>
+
+        <form method="POST" th:action="'/tests/delete/' + ${test.id}">
+          <button type="submit" class="py-0.5 px-1 font-normal border-current border-1 hover:bg-red-500">delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

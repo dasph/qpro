@@ -1,0 +1,23 @@
+<header class='p-4 px-5 bg-gray-700 text-gray-100 flex flex-row items-center justify-between' th:fragment="header">
+  <div class='flex flex-row items-center'>
+    <a href='/' class='flex items-center'>
+      <img src="/img/favicon.png" class="w-8 h-8" />
+      <h1 class='text-2xl ml-2 font-medium'>Quiz PRO</h1>
+    </a>
+
+    <a href='/tests' class='ml-6 text-xl font-normal' sec:authorize="isAuthenticated()">Tests</a>
+    <h2 class='ml-6 text-xl font-normal' sec:authorize="isAuthenticated()">|</h2>
+    <a href='/templates' class='ml-6 text-xl font-normal' sec:authorize="isAuthenticated()">Templates</a>
+  </div>
+
+  <div class='flex' sec:authorize="isAuthenticated()">
+    <span class="font-light" sec:authentication="name"></span>
+
+    <span class="mx-2 sm:mx-5">|</span>
+
+    <form id="logoutForm" method="POST" th:action="@{/logout}">
+      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+      <a class="font-medium cursor-pointer" onclick="document.forms['logoutForm'].submit()">Logout</a>
+    </form>
+  </div>
+</header>

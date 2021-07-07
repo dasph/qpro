@@ -1,0 +1,33 @@
+<div class="flex flex-col flex-grow" th:fragment="showTestResults">
+  <div class="flex flex-row justify-between">
+    <h1 class="text-2xl sm:text-3xl px-1 pb-2 mt-1 mb-2 border-l-1 border-current select-none" th:text="${test.testTemplate.name}"></h1>
+    <a href="/tests" class="self-center border-current border-1 px-3 py-1 cursor-pointer hover:text-white hover:bg-black">return</a>
+  </div>
+  <h2 class="sm:text-lg font-light ml-1 mb-5" th:text="'Test results for user: ' + ${test.user.name} + ' (' + ${test.user.email} + ')'"></h2>
+  <div class="flex flex-row justify-between mb-10">
+    <h1 class="text-lg sm:text-xl px-2 border-b-1 border-current">results</h1>
+  </div>
+
+  <div th:if="${test.testTemplate.questions.empty}"><h3>Test contained no questions</h3></div>
+  <div>
+    <div class="flex p-2 py-4 border-b-1 border-current" th:each="question : ${test.testTemplate.questions}">
+      <div class="grid grid-cols-2 grid-flow-col w-full">
+        <div class="col-span-1 flex space-x-5">
+          <img class="w-16 h-16" th:if="${question.image}" th:src="'data:image/png;base64,' + ${question.image}" />
+          <img class="w-16 h-16" th:if="!${question.image}" src="/img/image.png" />
+          <h3 class="" th:text="${question.value}"></h3>
+        </div>
+
+        <div class="col-span-1 grid gap-2 grid-cols-2 grid-rows-2 text-sm">
+          <div class="flex" th:each="answer : ${question.answers}">
+            <h1 th:text="${answer.value}" th:if="${answer.correct} and ${submission.get(answer.id) == question.id}" class="border-current p-1 border-l-1 border-green-500"></h1>
+            <h1 th:text="${answer.value}" th:if="${answer.correct} and ${submission.get(answer.id) != question.id}" class="border-current p-1 border-l-1 border-yellow-500"></h1>
+            <h1 th:text="${answer.value}" th:if="${!answer.correct} and ${submission.get(answer.id) == question.id}" class="border-current p-1 border-l-1 border-red-500"></h1>
+            <h1 th:text="${answer.value}" th:if="${!answer.correct} and ${submission.get(answer.id) != question.id}" class="border-current p-1"></h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,100 +1,71 @@
 package me.amvse.qpro.controllers;
 
-import me.amvse.qpro.models.User;
-import me.amvse.qpro.repositories.UserRepository;
-import me.amvse.qpro.typings.RestException;
-import me.amvse.qpro.validators.Signup;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
+import me.amvse.qpro.forms.SignupForm;
+import me.amvse.qpro.service.SecurityService;
+import me.amvse.qpro.service.UserService;
+import me.amvse.qpro.validators.SignupFormValidator;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-import javax.validation.Valid;
-
-@RestController
+@Controller
 public class UserController {
   @Autowired
-  private UserRepository userRepository;
+  private UserService userService;
 
-  @Value("${me.amvse.qpro.secret}")
-  private String secret;
+  @Autowired
+  private SecurityService securityService;
 
-  // ------------- CRUD -------------
+  @Autowired
+  private SignupFormValidator signupFormValidator;
 
-  @GetMapping("/users")
-  public Page<User> getUsers (Pageable pageable) {
-    return userRepository.findAll(pageable);
+  @GetMapping("/signup")
+  public String signup (Model model) {
+    if (securityService.isAuthenticated()) return "redirect:/";
+
+    model.addAttribute("view", "signup");
+    model.addAttribute("signupForm", new SignupForm());
+
+    return "index";
   }
 
-  @GetMapping("/users/{userId}")
-  public User getUser (@PathVariable Long userId) {
-    return userRepository.findById(userId).orElseThrow(() -> new RestException(404, "User not found with id " + userId));
+  @PostMapping("/signup")
+  public String signup (@ModelAttribute("signupForm") SignupForm signupForm, BindingResult bindingResult, Model model) {
+    signupFormValidator.validate(signupForm, bindingResult);
+    if (bindingResult.hasErrors()) {
+      model.addAttribute("view", "signup");
+      return "index";
+    }
+
+    userService.create(signupForm);
+
+    securityService.autoLogin(signupForm.getEmail(), signupForm.getPassword());
+
+    return "redirect:/";
   }
 
-  @PostMapping("/users")
-  public User createUser (@Valid @RequestBody Signup form, BindingResult br) {
-    if (br.hasErrors()) throw new RestException(400, br.getFieldError().getDefaultMessage());
+  @GetMapping("/signin")
+  public String signin (Model model, String error, String logout) {
+    if (securityService.isAuthenticated()) return "redirect:/";
 
-    if (userRepository.findOneByEmail(form.getEmail()).isPresent()) throw new RestException(400, "User with that email account already exists.");
+    model.addAttribute("view", "signin");
 
-    String hmac = hashPass(form.getPassword());
-    if (hmac == null) throw new RestException(500, "Failed to hash the provided password.");
+    if (error != null) model.addAttribute("error", "Invalid credentials.");
 
-    User user = new User(form.getName().trim(), form.getEmail(), hmac);
+    if (logout != null) model.addAttribute("message", "You have been successfully logged out.");
 
-    return userRepository.save(user);
+    return "index";
   }
 
-  @PutMapping("/users/{userId}")
-  public User updateUser (@PathVariable Long userId, @Valid @RequestBody Signup form) {
-    return userRepository.findById(userId).map((user) -> {
-      String hmac = hashPass(form.getPassword());
-      if (hmac == null) throw new RestException(500, "Failed to hash the provided password.");
+  @GetMapping({"/"})
+  public String home (Model model) {
+    model.addAttribute("view", "home");
 
-      user.setEmail(form.getEmail());
-      user.setName(form.getName().trim());
-      user.setHmac(hmac);
-
-      return userRepository.save(user);
-    }).orElseThrow(() -> new RestException(404, "User not found with id " + userId));
-  }
-
-  @DeleteMapping("/users/{userId}")
-  public ResponseEntity<?> deleteUser (@PathVariable Long userId) {
-    return userRepository.findById(userId).map((user) -> {
-      userRepository.delete(user);
-      return ResponseEntity.ok().build();
-    }).orElseThrow(() -> new RestException(404, "User not found with id " + userId));
-  }
-
-  // ------------- API -------------
-
-  // TODO: JWT
-
-  // TODO: Signup
-  // TODO: Signin
-  // TODO: Get Account
-  // TODO: Update Account
-  // TODO: Delete Account
-
-  private String hashPass (String pass) {
-    SecretKeySpec secretKeySpec = new SecretKeySpec(secret.getBytes(), "HmacSHA256");
-
-    try {
-      Mac hmac = Mac.getInstance("HmacSHA256");
-      hmac.init(secretKeySpec);
-      byte[] hmacData = hmac.doFinal(pass.getBytes(StandardCharsets.UTF_8));
-      return Base64.getEncoder().encodeToString(hmacData);
-
-    } catch (Exception e) { return null; }
+    return "index";
   }
 }

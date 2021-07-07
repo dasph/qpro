@@ -1,7 +1,14 @@
 package me.amvse.qpro.models;
 
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,8 +30,23 @@ public class User {
   @Column(name = "email", nullable = false, length = 128, unique = true)
   private String email;
 
-  @Column(name = "hmac", nullable = false, length = 44)
+  @Column(name = "hmac", nullable = false, length = 60)
   private String hmac;
+
+  @OneToMany
+  @JoinColumn(name = "userId")
+  @OrderBy("id ASC")
+  private List<TestTemplate> testTemplates = new ArrayList<>();
+
+  @OneToMany
+  @JoinColumn(name = "userId")
+  @OrderBy("id ASC")
+  private List<Test> tests = new ArrayList<>();
+
+  @OneToMany
+  @JoinColumn(name = "userId")
+  @OrderBy("id ASC")
+  private List<AnswerSubmission> answerSumbissions = new ArrayList<>();
 
   public User () {}
   public User (String name, String email, String hmac) {
@@ -47,4 +69,13 @@ public class User {
 
   public String getHmac () { return this.hmac; }
   public void setHmac (String hmac) { this.hmac = hmac; }
+
+  public List<TestTemplate> getTestTemplates () { return this.testTemplates; }
+  public void addTestTemplate (TestTemplate tt) { this.testTemplates.add(tt); }
+
+  public List<Test> getTests () { return this.tests; }
+  public void addTest (Test test) { this.tests.add(test); }
+
+  public List<AnswerSubmission> getAnswerSubmissions () { return this.answerSumbissions; }
+  public void addAnswerSubmission (AnswerSubmission answerSubmission) { this.answerSumbissions.add(answerSubmission); }
 }

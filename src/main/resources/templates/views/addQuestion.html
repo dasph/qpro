@@ -1,0 +1,89 @@
+<div class="flex flex-col flex-grow" th:fragment="addQuestion">
+  <div class="flex flex-row mb-5 justify-between">
+    <h1 class="text-2xl sm:text-3xl px-1 pb-2 mt-1 border-l-1 border-current select-none">create a new question</h1>
+    <a class="self-center border-current border-1 px-3 py-1 cursor-pointer hover:text-white hover:bg-black" th:href="'/templates/' + ${templateId}">return</a>
+  </div>
+
+  <form class="flex flex-col w-full max-w-screen-lg mx-auto" method="POST" enctype="multipart/form-data" th:action="'/templates/' + ${templateId} + '/new'" th:object="${newQuestionForm}">
+    <div class="flex flex-row space-x-2">
+      <div class="flex flex-col w-full">
+        <textarea class="p-1 w-full border-1 border-current" name="value" placeholder="your question" maxlength="512" required></textarea>
+        <span class="text-red-500 text-sm" th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></span>
+      </div>
+      <div class="flex flex-col items-center justify-center">
+        <input id="formImage" type="file" accept="image/png, image/jpeg" class="hidden" name="image" />
+        <label id="formImageLabel" for="formImage" class="p-1 w-max border-1 border-current">select an image</label>
+        <span class="text-red-500 text-sm" th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></span>
+      </div>
+    </div>
+
+    <div>
+      <h1 class="text-lg sm:text-xl px-2 border-b-1 border-current mt-3 w-max mb-6">answers</h1>
+    </div>
+
+    <div class="flex flex-col space-y-4">
+      <div class="flex flex-col">
+        <div class="flex space-x-5">
+          <h3 class="flex items-center text-xl">a</h3>
+          <div class="w-full">
+            <input class="p-1 w-full border-1 border-current" name="answerA" placeholder="answer A" maxlength="512" required />
+            <span class="text-red-500 text-sm" th:if="${#fields.hasErrors('answerA')}" th:errors="*{answerA}"></span>
+          </div>
+          <div class="flex items-center">
+            <input type="checkbox" name="checkboxA" />
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-col">
+        <div class="flex space-x-5">
+          <h3 class="flex items-center text-xl">b</h3>
+          <div class="w-full">
+            <input class="p-1 w-full border-1 border-current" name="answerB" placeholder="answer B" maxlength="512" required />
+            <span class="text-red-500 text-sm" th:if="${#fields.hasErrors('answerB')}" th:errors="*{answerB}"></span>
+          </div>
+          <div class="flex items-center">
+            <input type="checkbox" name="checkboxB" />
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-col">
+        <div class="flex space-x-5">
+          <h3 class="flex items-center text-xl">c</h3>
+          <div class="w-full">
+            <input class="p-1 w-full border-1 border-current" name="answerC" placeholder="answer C" maxlength="512" required />
+            <span class="text-red-500 text-sm" th:if="${#fields.hasErrors('answerC')}" th:errors="*{answerC}"></span>
+          </div>
+          <div class="flex items-center">
+            <input type="checkbox" name="checkboxC" />
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-col">
+        <div class="flex space-x-5">
+          <h3 class="flex items-center text-xl">d</h3>
+          <div class="w-full">
+            <input class="p-1 w-full border-1 border-current" name="answerD" placeholder="answer D" maxlength="512" required />
+            <span class="text-red-500 text-sm" th:if="${#fields.hasErrors('answerD')}" th:errors="*{answerD}"></span>
+          </div>
+          <div class="flex items-center">
+            <input type="checkbox" name="checkboxD" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex mt-5">
+      <input type="reset" value="reset" class="mr-auto mt-2 px-10 border-current border-1 py-1 cursor-pointer bg-transparent hover:text-white  text-red-500 hover:bg-red-500" />
+      <input type="submit" value="create" class="ml-auto mt-2 px-10 border-current border-1 py-1 cursor-pointer bg-transparent hover:text-white hover:bg-black" />
+    </div>
+
+  </form>
+  <script>
+    document.getElementById('formImage').addEventListener('change', ({ target: { files: [file] } }) => {
+      document.getElementById('formImageLabel').innerText = file ? file.name : 'select an image'
+    })
+    document.querySelectorAll('form')[1].addEventListener('reset', () => {
+      document.getElementById('formImageLabel').innerText = 'select an image'
+    })
+  </script>
+</div>
